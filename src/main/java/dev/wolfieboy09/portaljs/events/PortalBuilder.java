@@ -12,6 +12,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
@@ -159,14 +160,14 @@ public class PortalBuilder implements KubeStartupEvent {
         }
 
         @Info("(Optional) Create a sound from sound event data to play to the player when in the portal")
-        public PortalMaker inPortalAmbienceSound(CPASoundEventData data) {
-            this.builder.registerInPortalAmbienceSound(player -> data);
+        public PortalMaker inPortalAmbienceSound(SoundEvent event, float pitch, float volume) {
+            this.builder.registerInPortalAmbienceSound(player -> new CPASoundEventData(event, pitch, volume));
             return this;
         }
 
         @Info("(Optional) Create a sound from sound event data to play to the player after teleportation")
-        public PortalMaker afterTeleportationAmbienceSound(CPASoundEventData data) {
-            this.builder.registerPostTPPortalAmbience(player -> data);
+        public PortalMaker afterTeleportationAmbienceSound(SoundEvent event, float pitch, float volume) {
+            this.builder.registerPostTPPortalAmbience(player -> new CPASoundEventData(event, pitch, volume));
             return this;
         }
 
