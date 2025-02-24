@@ -57,12 +57,6 @@ public class PortalBuilder implements KubeStartupEvent {
             return this;
         }
 
-        @Info("The item to light the portal with")
-        public PortalMaker lightDefault() {
-            this.builder.lightWithItem(Items.FLINT_AND_STEEL);
-            return this;
-        }
-
         @Info("Light the portal with a fluid")
         public PortalMaker lightWithWater(Fluid fluid) {
             this.builder.lightWithFluid(fluid);
