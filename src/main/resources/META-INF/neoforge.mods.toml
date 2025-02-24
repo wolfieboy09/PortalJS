@@ -1,0 +1,32 @@
+modLoader="javafml"
+loaderVersion="${loader_version_range}"
+license="${mod_license}"
+#issueTrackerURL="https://change.me.to.your.issue.tracker.example.invalid/" #optional
+
+[[mods]]
+    modId="portaljs"
+    version="${mod_version}"
+    displayName="${mod_name}"
+    #updateJSONURL="https://change.me.example.invalid/updates.json" #optional
+    #displayURL="https://change.me.to.your.mods.homepage.example.invalid/" #optional
+    #logoFile="portaljs.png" #optional
+    authors="${mod_authors}"
+
+description='''${mod_description}'''
+
+[[mixins]]
+    config="portaljs.mixins.json"
+
+[[dependencies.portaljs]]
+    modId="neoforge"
+    type="required"
+    versionRange="${neo_version_range}"
+    ordering="NONE"
+    side="BOTH"
+
+[[dependencies.portaljs]]
+    modId="minecraft"
+    type="required"
+    versionRange="${minecraft_version_range}"
+    ordering="NONE"
+    side="BOTH"

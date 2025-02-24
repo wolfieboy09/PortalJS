@@ -1,0 +1,162 @@
+plugins {
+    id "maven-publish"
+    id 'java-library'
+    id 'net.neoforged.moddev' version '2.0.78'
+    id 'idea'
+}
+
+tasks.named('wrapper', Wrapper).configure {
+    distributionType = Wrapper.DistributionType.BIN
+}
+
+base {
+    archivesName = project.mod_id
+}
+
+version = project.mod_version
+group = project.mod_group_id
+
+java {
+    sourceCompatibility = targetCompatibility = JavaVersion.VERSION_21
+}
+
+neoForge {
+    version = project.neo_version
+    accessTransformers {
+        publish(project.file('src/main/resources/META-INF/accesstransformer.cfg'))
+    }
+
+
+    runs {
+        configureEach {
+            logLevel = org.slf4j.event.Level.INFO
+        }
+
+        client {
+            client()
+
+            gameDirectory = file 'run'
+            systemProperty 'neoforge.enabledGameTestNamespaces', mod_id
+        }
+
+        server {
+            server()
+            programArgument('--nogui')
+            gameDirectory = file 'server'
+        }
+    }
+
+    mods {
+        "${mod_id}" {
+            sourceSet(sourceSets.main)
+        }
+    }
+
+//    parchment {
+//        minecraftVersion = parchment_minecraft_version
+//        mappingsVersion = parchment_mappings_version
+//    }
+}
+
+sourceSets.main.resources {srcDir("src/generated/resources")}
+
+configurations {
+    runtimeClasspath.extendsFrom localRuntime
+}
+
+repositories {
+    maven {
+        name = "Lat's Maven (Rhino, KubeJS)"
+        url = "https://maven.saps.dev/minecraft"
+    }
+    maven {
+        name = "JitpackMaven"
+        url 'https://jitpack.io'
+        content {
+            includeGroup "com.github.rtyley"
+        }
+    }
+
+    maven {
+        name = "AzureDoom Mods"
+        url = "https://maven.azuredoom.com/mods"
+    }
+
+    maven {
+        url "https://cursemaven.com"
+        content {
+            includeGroup "curse.maven"
+        }
+    }
+}
+
+dependencies {
+    /* Kube Dependencies */
+    implementation(accessTransformers(interfaceInjectionData("dev.latvian.mods:kubejs-neoforge:${kubejs_version}")))
+
+    implementation "net.kyrptonaught.customportalapi:cpapireforged-neo-1.21.1:${portal_version}"
+}
+
+processResources {
+    var replaceProperties = [
+            minecraft_version      : minecraft_version,
+            minecraft_version_range: minecraft_version_range,
+            neo_version            : neo_version,
+            neo_version_range      : neo_version_range,
+            loader_version_range   : loader_version_range,
+            mod_id                 : mod_id,
+            mod_name               : mod_name,
+            mod_license            : mod_license,
+            mod_version            : mod_version,
+            mod_authors            : mod_authors,
+            mod_description        : mod_description
+    ]
+
+    filesMatching("META-INF/neoforge.mods.toml") {
+        expand replaceProperties
+    }
+}
+
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_21
+    withSourcesJar()
+}
+
+compileJava {
+    options.encoding = 'UTF-8'
+    options.release.set(21)
+}
+
+jar {
+    manifest {
+        attributes([
+                "Specification-Title"     : project.mod_id,
+                "Specification-Vendor"    : project.mod_authors,
+                "Specification-Version"   : "1",
+                "Implementation-Title"    : project.name,
+                "Implementation-Version"  : version,
+                "Implementation-Vendor"   : project.mod_authors,
+                "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
+        ])
+    }
+}
+
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            from components.java
+        }
+    }
+
+    repositories {
+    }
+}
+
+idea {
+    module {
+        downloadSources = true
+        downloadJavadoc = true
+    }
+}
