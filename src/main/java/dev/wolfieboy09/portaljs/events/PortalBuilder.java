@@ -49,12 +49,6 @@ public class PortalBuilder implements KubeStartupEvent {
             return this;
         }
 
-        @Info("The block for the portal frame")
-        public PortalMaker frameBlock(ResourceLocation block) {
-            this.builder.frameBlock(BuiltInRegistries.BLOCK.get(block));
-            return this;
-        }
-
 
         @Info("The item to light the portal with")
         public PortalMaker lightWithItem(Item item) {
