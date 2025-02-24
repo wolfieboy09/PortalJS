@@ -14,6 +14,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.material.Fluid;
 
@@ -53,6 +54,12 @@ public class PortalBuilder implements KubeStartupEvent {
         @Info("The item to light the portal with")
         public PortalMaker lightWithItem(Item item) {
             this.builder.lightWithItem(item);
+            return this;
+        }
+
+        @Info("The item to light the portal with")
+        public PortalMaker lightDefault() {
+            this.builder.lightWithItem(Items.FLINT_AND_STEEL);
             return this;
         }
 
