@@ -1,0 +1,11 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "priority": 10000,
+  "package": "dev.wolfieboy09.portaljs.mixins",
+  "compatibilityLevel": "JAVA_21",
+  "refmap": "portaljs.refmap.json",
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
