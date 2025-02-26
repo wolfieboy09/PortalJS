@@ -88,13 +88,15 @@ repositories {
             includeGroup "curse.maven"
         }
     }
+
+    maven { url "https://maven.commoble.net/" }
 }
 
 dependencies {
-    /* Kube Dependencies */
     implementation(accessTransformers(interfaceInjectionData("dev.latvian.mods:kubejs-neoforge:${kubejs_version}")))
-
-    implementation "net.kyrptonaught.customportalapi:cpapireforged-neo-1.21.1:${portal_version}"
+//    implementation("net.commoble.infiniverse:infiniverse-1.21:2.0.1.0")
+//    jarJar("net.commoble.infiniverse:infiniverse-1.21:2.0.1.0")
+    implementation("net.kyrptonaught.customportalapi:cpapireforged-neo-1.21.1:${portal_version}")
 }
 
 processResources {
