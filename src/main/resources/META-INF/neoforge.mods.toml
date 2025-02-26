@@ -30,3 +30,18 @@ description='''${mod_description}'''
     versionRange="${minecraft_version_range}"
     ordering="NONE"
     side="BOTH"
+
+[[dependencies.portaljs]]
+    modId="kubejs"
+    type="required"
+    versionRange="[2101.7.2-build.222,)"
+    ordering="NONE"
+    side="BOTH"
+
+[[dependencies.portaljs]]
+    modId="cpapireforged"
+    type="required"
+    versionRange="[1.0.11,)"
+    ordering="AFTER"
+    side="BOTH"
+

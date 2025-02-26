@@ -7,6 +7,7 @@ import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.neoforged.neoforge.registries.RegisterEvent;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 
@@ -16,6 +17,7 @@ public class PortalJS {
     private static final Logger LOGGER = LogUtils.getLogger();
 
     public PortalJS(@NotNull IEventBus modEventBus, ModContainer modContainer) {
+        BlockRegistry.BLOCKS.register(modEventBus);
         modEventBus.addListener(this::registerPortals);
         LOGGER.info("It's time to portal!");
     }

@@ -1,19 +1,41 @@
 package dev.wolfieboy09.portaljs.events;
 
+import com.mojang.serialization.DynamicOps;
 import dev.latvian.mods.kubejs.event.KubeStartupEvent;
 import dev.latvian.mods.kubejs.typings.Info;
 import dev.latvian.mods.rhino.util.HideFromJS;
+import dev.wolfieboy09.portaljs.blocks.PJSPortalBlock;
+import dev.wolfieboy09.portaljs.context.PortalBlockContext;
 import net.kyrptonaught.customportalapi.CustomPortalBlock;
+import net.kyrptonaught.customportalapi.CustomPortalsMod;
 import net.kyrptonaught.customportalapi.api.CustomPortalBuilder;
 import net.kyrptonaught.customportalapi.event.CPASoundEventData;
 import net.kyrptonaught.customportalapi.portal.PortalIgnitionSource;
 import net.kyrptonaught.customportalapi.util.SHOULDTP;
+import net.minecraft.client.Minecraft;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Holder;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.nbt.NbtOps;
+import net.minecraft.nbt.Tag;
+import net.minecraft.resources.RegistryOps;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.chunk.ChunkGenerator;
+import net.minecraft.world.level.dimension.DimensionType;
+import net.minecraft.world.level.dimension.LevelStem;
 import net.minecraft.world.level.material.Fluid;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,7 +56,7 @@ public class PortalBuilder implements KubeStartupEvent {
     @SuppressWarnings("unused")
     public static class PortalMaker {
         private final CustomPortalBuilder builder;
-        //private Consumer<PortalBlockContext> randomConsumer;
+        private Consumer<PortalBlockContext> randomConsumer = null;
 
         public PortalMaker() {
             PortalBuilder.createdPortals.add(this);
@@ -119,6 +141,15 @@ public class PortalBuilder implements KubeStartupEvent {
             return this;
         }
 
+//        public PortalMaker generateAndSet(String name, ResourceLocation dimension) {
+//            InfiniverseAPI.get().getOrCreateLevel(
+//                    Minecraft.getInstance().level.getServer(),
+//                    ResourceKey.create(Registries.DIMENSION, dimension,
+//                            () -> create)
+//            );
+//            return this;
+//        }
+
         @Info("(Optional) Set the RGB color for the portal's tint")
         public PortalMaker tintColor(int hex) {
             this.builder.tintColor(hex);
@@ -167,22 +198,15 @@ public class PortalBuilder implements KubeStartupEvent {
             return this;
         }
 
-//        public PortalMaker onRandomTick(Consumer<PortalBlockContext> context) {
-//            this.randomConsumer = context;
-//            return this;
-//        }
+        public PortalMaker onRandomTick(Consumer<PortalBlockContext> context) {
+            this.randomConsumer = context;
+            return this;
+        }
 
         @HideFromJS
         public void register() {
-            // TODO fix registry already frozen error
-//            this.builder.customPortalBlock(() ->
-//                new CustomPortalBlock(Lazy.of(() -> CustomPortalsMod.getDefaultPortalBlock().properties()).get()) {
-//                        @Override
-//                        protected void randomTick(@NotNull BlockState state, @NotNull ServerLevel level, @NotNull BlockPos pos, @NotNull RandomSource source) {
-//                            randomConsumer.accept(new PortalBlockContext(state, level, pos, source));
-//                            super.randomTick(state, level, pos, source);
-//                        }
-//                    });
+            this.builder.customPortalBlock(() ->
+                new PJSPortalBlock(Block.Properties.ofFullCopy(Blocks.NETHER_PORTAL).noCollission().strength(-1).sound(SoundType.GLASS).lightLevel(state -> 11), randomConsumer));
             this.builder.registerPortal();
         }
     }
