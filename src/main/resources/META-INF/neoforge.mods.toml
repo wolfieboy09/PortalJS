@@ -34,7 +34,7 @@ description='''${mod_description}'''
 [[dependencies.portaljs]]
     modId="kubejs"
     type="required"
-    versionRange="[2101.7.2-build.222,)"
+    versionRange="[2101.7.1-build.181,)"
     ordering="NONE"
     side="BOTH"
 
