@@ -10,13 +10,13 @@ import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 
-@Mod(PortalJS.MODID)
+@Mod(PortalJS.MOD_ID)
 public class PortalJS {
-    public static final String MODID = "portaljs";
+    public static final String MOD_ID = "portaljs";
     private static final Logger LOGGER = LogUtils.getLogger();
 
     public PortalJS(@NotNull IEventBus modEventBus, ModContainer modContainer) {
-        //BlockRegistry.BLOCKS.register(modEventBus);
+        //BlockRegistry.register(modEventBus);
         modEventBus.addListener(this::registerPortals);
         LOGGER.info("It's time to portal!");
     }
