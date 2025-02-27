@@ -35,7 +35,7 @@ public class PortalBuilder implements KubeStartupEvent {
     @SuppressWarnings("unused")
     public static class PortalMaker {
         private final CustomPortalBuilder builder;
-        private Consumer<PortalBlockContext> randomConsumer = null;
+        //private Consumer<PortalBlockContext> randomConsumer = null;
 
         public PortalMaker() {
             PortalBuilder.createdPortals.add(this);
@@ -130,12 +130,6 @@ public class PortalBuilder implements KubeStartupEvent {
 //        }
 
         @Info("(Optional) Set the RGB color for the portal's tint")
-        public PortalMaker tintColor(int hex) {
-            this.builder.tintColor(hex);
-            return this;
-        }
-
-        @Info("(Optional) Set the RGB color for the portal's tint")
         public PortalMaker tintColor(int r, int g, int b) {
             this.builder.tintColor(r, g, b);
             return this;
@@ -177,14 +171,14 @@ public class PortalBuilder implements KubeStartupEvent {
             return this;
         }
 
-        public PortalMaker onRandomTick(Consumer<PortalBlockContext> context) {
-            this.randomConsumer = context;
-            return this;
-        }
+//        public PortalMaker onRandomTick(Consumer<PortalBlockContext> context) {
+//            this.randomConsumer = context;
+//            return this;
+//        }
 
         @HideFromJS
         public void register() {
-            //this.builder.customPortalBlock(() -> new PJSPortalBlock(randomConsumer));
+            //this.builder.customPortalBlock(() -> new PJSPortalBlock(this.randomConsumer));
             this.builder.registerPortal();
         }
     }
