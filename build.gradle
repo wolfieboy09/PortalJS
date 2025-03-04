@@ -99,6 +99,7 @@ dependencies {
     // Don't jarjar it just yet, need to get the feature in for the thing itself first
     //jarJar("net.commoble.infiniverse:infiniverse-1.21:2.0.1.0")
     implementation("net.kyrptonaught.customportalapi:cpapireforged-neo-1.21.1:${portal_version}")
+    runtimeOnly "curse.maven:probejs-585406:5820894"
 }
 
 processResources {

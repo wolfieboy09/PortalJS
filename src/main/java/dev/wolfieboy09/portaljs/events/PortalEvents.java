@@ -6,5 +6,6 @@ import dev.latvian.mods.kubejs.event.EventHandler;
 public interface PortalEvents {
     EventGroup GROUP = EventGroup.of("PortalEvents");
 
-    EventHandler REGISTER_PORTAL = GROUP.startup("register", () -> PortalBuilder.class);
+    EventHandler REGISTER_PORTAL = GROUP.server("register", () -> PortalBuilder.class);
+    EventHandler PORTAL_SPAWN = GROUP.server("onPortalSpawn", () -> PortalJSSpawnEvent.class);
 }

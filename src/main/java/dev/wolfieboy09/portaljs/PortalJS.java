@@ -7,6 +7,7 @@ import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.neoforged.neoforge.common.NeoForge;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 
@@ -18,15 +19,21 @@ public class PortalJS {
     public PortalJS(@NotNull IEventBus modEventBus, ModContainer modContainer) {
         //BlockRegistry.register(modEventBus);
         modEventBus.addListener(this::registerPortals);
+        //NeoForge.EVENT_BUS.addListener(PortalJSEvents::onServerReload);
+
+        NeoForge.EVENT_BUS.addListener(PortalJSEvents::portalSpawn);
+
         LOGGER.info("It's time to portal!");
     }
 
     private void registerPortals(FMLCommonSetupEvent event) {
-        PortalEvents.REGISTER_PORTAL.post(new PortalBuilder());
-        for (PortalBuilder.PortalMaker maker : PortalBuilder.createdPortals) {
-            maker.register();
+        if (PortalEvents.REGISTER_PORTAL.hasListeners()) {
+            PortalEvents.REGISTER_PORTAL.post(new PortalBuilder());
+            for (PortalBuilder.PortalMaker maker : PortalBuilder.createdPortals) {
+                maker.register();
+            }
+            // Needed for one time use, and to save memory
+            PortalBuilder.createdPortals.clear();
         }
-        // Needed for one time use, and to save memory
-        PortalBuilder.createdPortals.clear();
     }
 }
