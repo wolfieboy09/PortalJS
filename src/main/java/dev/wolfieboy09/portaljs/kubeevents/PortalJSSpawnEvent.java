@@ -1,4 +1,4 @@
-package dev.wolfieboy09.portaljs.events;
+package dev.wolfieboy09.portaljs.kubeevents;
 
 import dev.latvian.mods.kubejs.event.KubeEvent;
 import dev.latvian.mods.rhino.util.HideFromJS;

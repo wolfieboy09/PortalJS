@@ -1,9 +1,8 @@
-package dev.wolfieboy09.portaljs.events;
+package dev.wolfieboy09.portaljs.kubeevents;
 
 import dev.latvian.mods.kubejs.event.KubeStartupEvent;
 import dev.latvian.mods.kubejs.typings.Info;
 import dev.latvian.mods.rhino.util.HideFromJS;
-import dev.wolfieboy09.portaljs.context.PortalBlockContext;
 import net.kyrptonaught.customportalapi.CustomPortalBlock;
 import net.kyrptonaught.customportalapi.api.CustomPortalBuilder;
 import net.kyrptonaught.customportalapi.event.CPASoundEventData;

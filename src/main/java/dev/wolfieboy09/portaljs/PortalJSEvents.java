@@ -1,20 +1,30 @@
 package dev.wolfieboy09.portaljs;
 
-import dev.wolfieboy09.portaljs.events.PortalEvents;
-import dev.wolfieboy09.portaljs.events.PortalJSSpawnEvent;
+import dev.wolfieboy09.portaljs.events.CreatedPortalEvent;
+import dev.wolfieboy09.portaljs.kubeevents.PortalEvents;
+import dev.wolfieboy09.portaljs.kubeevents.PortalJSSpawnEvent;
 import net.kyrptonaught.customportalapi.util.CustomPortalHelper;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.neoforged.neoforge.event.level.BlockEvent;
 import org.jetbrains.annotations.NotNull;
 
 public class PortalJSEvents {
-    public static void portalSpawn(@NotNull BlockEvent.PortalSpawnEvent event) {
-        Block frameblock = CustomPortalHelper.getPortalBase((Level) event.getLevel(), event.getPos());
+    public static void vanillaPortalSpawn(@NotNull BlockEvent.PortalSpawnEvent event) {
+        Block frameBlock = event.getLevel().getBlockState(event.getPos()).getBlock();
+        event.setCanceled(sendEvent(frameBlock));
+    }
 
-        PortalJSSpawnEvent portalSpawnEvent = new PortalJSSpawnEvent(frameblock);
-        PortalEvents.PORTAL_SPAWN.post(portalSpawnEvent);
+    public static void customPortalSpawn(@NotNull CreatedPortalEvent event) {
+        Block frameblock = CustomPortalHelper.getPortalBase(event.getLevel(), event.getPos());
+        event.setCanceled(sendEvent(frameblock));
+    }
 
-        event.setCanceled(portalSpawnEvent.isCancelled());
+    private static boolean sendEvent(Block foundation) {
+        if (PortalEvents.PORTAL_SPAWN.hasListeners()) {
+            PortalJSSpawnEvent portalSpawnEvent = new PortalJSSpawnEvent(foundation);
+            PortalEvents.PORTAL_SPAWN.post(portalSpawnEvent);
+            return portalSpawnEvent.isCancelled();
+        }
+        return false;
     }
 }

@@ -1,8 +1,8 @@
 package dev.wolfieboy09.portaljs;
 
 import com.mojang.logging.LogUtils;
-import dev.wolfieboy09.portaljs.events.PortalBuilder;
-import dev.wolfieboy09.portaljs.events.PortalEvents;
+import dev.wolfieboy09.portaljs.kubeevents.PortalBuilder;
+import dev.wolfieboy09.portaljs.kubeevents.PortalEvents;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.Mod;
@@ -21,7 +21,8 @@ public class PortalJS {
         modEventBus.addListener(this::registerPortals);
         //NeoForge.EVENT_BUS.addListener(PortalJSEvents::onServerReload);
 
-        NeoForge.EVENT_BUS.addListener(PortalJSEvents::portalSpawn);
+        NeoForge.EVENT_BUS.addListener(PortalJSEvents::vanillaPortalSpawn);
+        modEventBus.addListener(PortalJSEvents::customPortalSpawn);
 
         LOGGER.info("It's time to portal!");
     }
