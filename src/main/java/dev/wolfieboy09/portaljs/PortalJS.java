@@ -28,7 +28,7 @@ public class PortalJS {
         LOGGER.info("It's time to portal!");
     }
 
-    private void registerPortals(RegisterEvent event) {
+    private void registerPortals(FMLCommonSetupEvent event) {
         if (PortalEvents.REGISTER_PORTAL.hasListeners()) {
             PortalEvents.REGISTER_PORTAL.post(new PortalBuilder());
             for (PortalBuilder.PortalMaker maker : PortalBuilder.createdPortals) {
