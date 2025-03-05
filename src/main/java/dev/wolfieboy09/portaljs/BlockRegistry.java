@@ -8,7 +8,7 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 public class BlockRegistry {
     public static final DeferredRegister.Blocks BLOCKS = DeferredRegister.createBlocks(PortalJS.MOD_ID);
 
-    public static final DeferredBlock<PJSPortalBlock> PORTAL_BLOCK = BLOCKS.register("portal_block", registryName -> new PJSPortalBlock(null));
+    public static final DeferredBlock<PJSPortalBlock> PORTAL_BLOCK = BLOCKS.register("portal_block", registryName -> new PJSPortalBlock());
 
     public static void register(IEventBus bus) {
         BLOCKS.register(bus);

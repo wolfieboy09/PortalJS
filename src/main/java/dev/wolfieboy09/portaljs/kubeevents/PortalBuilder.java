@@ -3,7 +3,7 @@ package dev.wolfieboy09.portaljs.kubeevents;
 import dev.latvian.mods.kubejs.event.KubeStartupEvent;
 import dev.latvian.mods.kubejs.typings.Info;
 import dev.latvian.mods.rhino.util.HideFromJS;
-import dev.wolfieboy09.portaljs.blocks.PJSPortalBlock;
+import dev.wolfieboy09.portaljs.BlockRegistry;
 import dev.wolfieboy09.portaljs.context.PortalBlockContext;
 import net.kyrptonaught.customportalapi.CustomPortalBlock;
 import net.kyrptonaught.customportalapi.api.CustomPortalBuilder;
@@ -36,7 +36,7 @@ public class PortalBuilder implements KubeStartupEvent {
     @SuppressWarnings("unused")
     public static class PortalMaker {
         private final CustomPortalBuilder builder;
-        private Consumer<PortalBlockContext> randomConsumer = null;
+        private Consumer<PortalBlockContext> randomConsumer;
 
         public PortalMaker() {
             PortalBuilder.createdPortals.add(this);
@@ -172,6 +172,7 @@ public class PortalBuilder implements KubeStartupEvent {
             return this;
         }
 
+        @Info("(Optional) On a random tick, do something (example is nether portal spawning entities)")
         public PortalMaker onRandomTick(Consumer<PortalBlockContext> context) {
             this.randomConsumer = context;
             return this;
@@ -179,7 +180,7 @@ public class PortalBuilder implements KubeStartupEvent {
 
         @HideFromJS
         public void register() {
-            this.builder.customPortalBlock(() -> new PJSPortalBlock(this.randomConsumer));
+            this.builder.customPortalBlock(() -> BlockRegistry.PORTAL_BLOCK.get().withConsumer(this.randomConsumer));
             this.builder.registerPortal();
         }
     }
