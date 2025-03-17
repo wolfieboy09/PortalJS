@@ -30,7 +30,7 @@ public class PJSPortalBlock extends CustomPortalBlock {
 
     @Override
     protected void randomTick(@NotNull BlockState blockState, @NotNull ServerLevel level, @NotNull BlockPos pos, @NotNull RandomSource randomSource) {
-        if (this.context != null) {
+        if (this.context != null && !level.isClientSide()) {
             this.context.accept(new PortalBlockContext(blockState, level, pos, randomSource));
         }
     }
