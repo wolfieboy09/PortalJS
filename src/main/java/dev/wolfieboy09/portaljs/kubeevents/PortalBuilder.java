@@ -37,7 +37,7 @@ public class PortalBuilder implements KubeStartupEvent {
     public static class PortalMaker {
         private final CustomPortalBuilder builder;
         private Consumer<PortalBlockContext> randomConsumer;
-        //private Consumer<Item> itemConsumer;
+        //private Consumer<? super Item> itemConsumer;
 
         public PortalMaker() {
             PortalBuilder.createdPortals.add(this);
@@ -57,12 +57,12 @@ public class PortalBuilder implements KubeStartupEvent {
             return this;
         }
 
-        @Info("(Optional) [Defaults to flint and steel] The item to light the portal with")
-        public PortalMaker lightWithItem(Item item, Consumer<Item> itemConsumer) {
-            this.builder.lightWithItem(item);
-            //this.itemConsumer = itemConsumer;
-            return this;
-        }
+//        @Info("(Optional) [Defaults to flint and steel] The item to light the portal with")
+//        public PortalMaker lightWithItem(Item item, Consumer<? super Item> itemConsumer) {
+//            this.builder.lightWithItem(item);
+//            //this.itemConsumer = itemConsumer;
+//            return this;
+//        }
 
         @Info("Light the portal with a fluid")
         public PortalMaker lightWithFluid(Fluid fluid) {
