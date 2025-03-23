@@ -5,13 +5,14 @@ import dev.wolfieboy09.portaljs.kubeevents.PortalEvents;
 import dev.wolfieboy09.portaljs.kubeevents.PortalJSSpawnEvent;
 import net.kyrptonaught.customportalapi.util.CustomPortalHelper;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.neoforged.neoforge.event.level.BlockEvent;
 import org.jetbrains.annotations.NotNull;
 
 public class PortalJSEvents {
     public static void vanillaPortalSpawn(@NotNull BlockEvent.PortalSpawnEvent event) {
-        Block frameBlock = event.getLevel().getBlockState(event.getPos()).getBlock();
-        event.setCanceled(sendEvent(frameBlock));
+        // This event only gets fired from nether portals... so I could just... hard code it...
+        event.setCanceled(sendEvent(Blocks.OBSIDIAN));
     }
 
     public static void customPortalSpawn(@NotNull CreatedPortalEvent event) {
