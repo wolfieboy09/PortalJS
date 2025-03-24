@@ -35,7 +35,8 @@ public class PortalBuilder implements KubeStartupEvent {
 
     @SuppressWarnings("unused")
     public static class PortalMaker {
-        private final CustomPortalBuilder builder;
+        @HideFromJS
+        public final CustomPortalBuilder builder;
         private Consumer<PortalBlockContext> randomConsumer;
         //private Consumer<? super Item> itemConsumer;
 
@@ -49,7 +50,6 @@ public class PortalBuilder implements KubeStartupEvent {
             this.builder.frameBlock(block);
             return this;
         }
-
 
         @Info("(Optional) [Defaults to flint and steel] The item to light the portal with")
         public PortalMaker lightWithItem(Item item) {
