@@ -41,7 +41,7 @@ description='''${mod_description}'''
 [[dependencies.portaljs]]
     modId="cpapireforged"
     type="required"
-    versionRange="[1.0.11,)"
+    versionRange="[1.2.1,)"
     ordering="NONE"
     side="BOTH"
 
