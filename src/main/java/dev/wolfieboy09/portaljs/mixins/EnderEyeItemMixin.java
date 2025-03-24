@@ -3,9 +3,7 @@ package dev.wolfieboy09.portaljs.mixins;
 
 import dev.wolfieboy09.portaljs.events.CreatedPortalEvent;
 import net.minecraft.core.BlockPos;
-import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.item.EnderEyeItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.context.UseOnContext;
