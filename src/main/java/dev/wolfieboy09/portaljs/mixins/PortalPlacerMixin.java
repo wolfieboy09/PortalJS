@@ -16,7 +16,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public abstract class PortalPlacerMixin {
     @Inject(method = "createPortal", at = @At(value = "INVOKE", target = "Lnet/kyrptonaught/customportalapi/portal/frame/PortalFrameTester;lightPortal(Lnet/minecraft/world/level/block/Block;)V"), cancellable = true)
     private static void sendEvent(PortalLink link, Level world, BlockPos pos, Block foundationBlock, CallbackInfoReturnable<Boolean> cir) {
-        CreatedPortalEvent event = new CreatedPortalEvent(world, pos, foundationBlock);
+        CreatedPortalEvent event = new CreatedPortalEvent(world, pos, foundationBlock, false);
         ModLoader.postEvent(event);
         if (event.isCanceled()) {
             cir.setReturnValue(true);
