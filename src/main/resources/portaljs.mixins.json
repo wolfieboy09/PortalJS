@@ -9,6 +9,9 @@
     "defaultRequire": 1
   },
   "mixins": [
-    "PortalPlacerMixin"
+    "EnderEyeItemMixin",
+    "PortalLinkAccessor",
+    "PortalPlacerMixin",
+    "PortalRegistryMapAccessor"
   ]
 }
