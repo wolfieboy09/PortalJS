@@ -32,7 +32,7 @@ public abstract class EnderEyeItemMixin extends Item {
         CreatedPortalEvent event = new CreatedPortalEvent(context.getLevel(), blockpos, Blocks.END_PORTAL_FRAME, true);
         ModLoader.postEvent(event);
         if (event.isCanceled()) {
-            cir.setReturnValue(InteractionResult.CONSUME);
+            cir.setReturnValue(InteractionResult.PASS);
         }
      }
 }
