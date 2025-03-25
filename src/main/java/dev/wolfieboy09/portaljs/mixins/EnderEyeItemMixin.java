@@ -21,13 +21,18 @@ public abstract class EnderEyeItemMixin extends Item {
         super(props);
     }
 
-    @Inject(method = "useOn", at= @At(value = "INVOKE", target = "Lnet/minecraft/world/level/block/state/pattern/BlockPattern$BlockPatternMatch;getFrontTopLeft()Lnet/minecraft/core/BlockPos;"))
-    public void callback(@NotNull UseOnContext context, CallbackInfoReturnable<InteractionResult> cir) {
+//    @Inject(method = "useOn", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/block/state/BlockState;setValue(Lnet/minecraft/world/level/block/state/properties/Property;Ljava/lang/Comparable;)Ljava/lang/Object;"))
+//    private void customParticlesOnPlace(UseOnContext context, CallbackInfoReturnable<InteractionResult> cir) {
+//
+//    }
+
+    @Inject(method = "useOn", at= @At(value = "INVOKE", target = "Lnet/minecraft/world/level/block/state/pattern/BlockPattern$BlockPatternMatch;getFrontTopLeft()Lnet/minecraft/core/BlockPos;"), cancellable = true)
+    private void portalCreationInjection(@NotNull UseOnContext context, CallbackInfoReturnable<InteractionResult> cir) {
         BlockPos blockpos = context.getClickedPos();
         CreatedPortalEvent event = new CreatedPortalEvent(context.getLevel(), blockpos, Blocks.END_PORTAL_FRAME, true);
         ModLoader.postEvent(event);
         if (event.isCanceled()) {
-            cir.cancel();
+            cir.setReturnValue(InteractionResult.CONSUME);
         }
      }
 }
