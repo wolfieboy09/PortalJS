@@ -21,7 +21,7 @@ public class PortalJSSpawnEvent implements KubeEvent {
         this.serverLevel = server;
     }
 
-    public ServerLevel getServer() {
+    public ServerLevel getLevel() {
         return this.serverLevel;
     }
 
