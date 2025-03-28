@@ -4,6 +4,7 @@ import dev.latvian.mods.kubejs.event.KubeStartupEvent;
 import dev.latvian.mods.kubejs.typings.Info;
 import dev.latvian.mods.rhino.util.HideFromJS;
 import dev.wolfieboy09.portaljs.BlockRegistry;
+import dev.wolfieboy09.portaljs.api.BiHolder;
 import dev.wolfieboy09.portaljs.context.PortalBlockContext;
 import net.kyrptonaught.customportalapi.CustomPortalBlock;
 import net.kyrptonaught.customportalapi.api.CustomPortalBuilder;
@@ -38,7 +39,7 @@ public class PortalBuilder implements KubeStartupEvent {
         @HideFromJS
         public final CustomPortalBuilder builder;
         private Consumer<PortalBlockContext> randomConsumer;
-        //private Consumer<? super Item> itemConsumer;
+        private BiHolder<? super Item, Consumer<? super Item>> itemBiHolder;
 
         public PortalMaker() {
             PortalBuilder.createdPortals.add(this);
@@ -57,12 +58,12 @@ public class PortalBuilder implements KubeStartupEvent {
             return this;
         }
 
-//        @Info("(Optional) [Defaults to flint and steel] The item to light the portal with")
-//        public PortalMaker lightWithItem(Item item, Consumer<? super Item> itemConsumer) {
-//            this.builder.lightWithItem(item);
-//            //this.itemConsumer = itemConsumer;
-//            return this;
-//        }
+        @Info("(Optional) [Defaults to flint and steel] The item to light the portal with")
+        public PortalMaker lightWithItem(Item item, Consumer<? super Item> itemBiHolder) {
+            this.builder.lightWithItem(item);
+            this.itemBiHolder = new BiHolder<>(item, itemBiHolder);
+            return this;
+        }
 
         @Info("Light the portal with a fluid")
         public PortalMaker lightWithFluid(Fluid fluid) {
