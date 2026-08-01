@@ -4,8 +4,8 @@ import dev.latvian.mods.kubejs.event.KubeStartupEvent;
 import dev.latvian.mods.kubejs.typings.Info;
 import dev.latvian.mods.rhino.util.HideFromJS;
 import dev.wolfieboy09.portaljs.BlockRegistry;
-import dev.wolfieboy09.portaljs.api.BiHolder;
 import dev.wolfieboy09.portaljs.context.PortalBlockContext;
+import dev.wolfieboy09.portaljs.context.PortalIgniteContext;
 import net.kyrptonaught.customportalapi.CustomPortalBlock;
 import net.kyrptonaught.customportalapi.api.CustomPortalBuilder;
 import net.kyrptonaught.customportalapi.event.CPASoundEventData;
@@ -39,7 +39,10 @@ public class PortalBuilder implements KubeStartupEvent {
         @HideFromJS
         public final CustomPortalBuilder builder;
         private Consumer<PortalBlockContext> randomConsumer;
-        private BiHolder<? super Item, Consumer<? super Item>> itemBiHolder;
+        private Item ignitionItem;
+        private Consumer<? super Item> onIgnitionItemUsed;
+        private Function<PortalIgniteContext, Boolean> userPreIgniteEvent;
+        private Consumer<PortalIgniteContext> userIgniteEvent;
 
         public PortalMaker() {
             PortalBuilder.createdPortals.add(this);
@@ -58,10 +61,11 @@ public class PortalBuilder implements KubeStartupEvent {
             return this;
         }
 
-        @Info("(Optional) [Defaults to flint and steel] The item to light the portal with")
-        public PortalMaker lightWithItem(Item item, Consumer<? super Item> itemBiHolder) {
+        @Info("(Optional) [Defaults to flint and steel] The item to light the portal with. `onUsed` is called with the item once the portal is successfully ignited with it")
+        public PortalMaker lightWithItem(Item item, Consumer<? super Item> onUsed) {
             this.builder.lightWithItem(item);
-            this.itemBiHolder = new BiHolder<>(item, itemBiHolder);
+            this.ignitionItem = item;
+            this.onIgnitionItemUsed = onUsed;
             return this;
         }
 
@@ -187,9 +191,43 @@ public class PortalBuilder implements KubeStartupEvent {
             return this;
         }
 
+        @Info("(Optional) Event called right before the portal is ignited. Return false to cancel the ignition entirely")
+        public PortalMaker beforeIgnite(Function<PortalIgniteContext, Boolean> event) {
+            this.userPreIgniteEvent = event;
+            return this;
+        }
+
+        @Info("(Optional) Event called right after the portal has been successfully ignited")
+        public PortalMaker afterIgnite(Consumer<PortalIgniteContext> event) {
+            this.userIgniteEvent = event;
+            return this;
+        }
+
         @HideFromJS
         public void register() {
             this.builder.customPortalBlock(() -> BlockRegistry.PORTAL_BLOCK.get().withConsumer(this.randomConsumer));
+
+            if (this.userPreIgniteEvent != null) {
+                this.builder.registerPreIgniteEvent(
+                        (player, world, portalPos, framePos, ignitionSource) -> Boolean.TRUE.equals(
+                                this.userPreIgniteEvent.apply(new PortalIgniteContext(player, world, portalPos, framePos, ignitionSource))
+                        )
+                );
+            }
+
+            if (this.onIgnitionItemUsed != null || this.userIgniteEvent != null) {
+                this.builder.registerIgniteEvent((player, world, portalPos, framePos, ignitionSource) -> {
+                    // Fire the consumer passed to lightWithItem(item, onUsed) now that we actually
+                    // know the portal lit successfully, instead of never calling it at all.
+                    if (this.onIgnitionItemUsed != null && ignitionSource.sourceType == PortalIgnitionSource.SourceType.USEITEM) {
+                        this.onIgnitionItemUsed.accept(this.ignitionItem);
+                    }
+                    if (this.userIgniteEvent != null) {
+                        this.userIgniteEvent.accept(new PortalIgniteContext(player, world, portalPos, framePos, ignitionSource));
+                    }
+                });
+            }
+
             this.builder.registerPortal();
         }
     }
